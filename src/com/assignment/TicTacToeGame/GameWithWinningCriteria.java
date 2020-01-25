@@ -3,16 +3,19 @@ package com.assignment.TicTacToeGame;
 public interface GameWithWinningCriteria extends GameWithInterface{
 
     @Override
-    boolean isExists();
+    void setExists(boolean exists);
+
+    @Override
+    boolean getExists();
 
     @Override
     void setColumn(int column);
 
     @Override
-    void setRow(int row);
+    int getColumn();
 
     @Override
-    int getColumn();
+    void setRow(int row);
 
     @Override
     int getRow();
