@@ -25,7 +25,7 @@ public class PlayGame {
                 switch (choice){
                     case 0:return;
                     case 1:playOnlyHuman();check=false;
-                    case 2:playWithComputer();check=false;
+            
                 }
             }
             else{
