@@ -24,8 +24,8 @@ public class PlayGame {
                 check = true;
                 switch (choice){
                     case 0:return;
-                    case 1:playOnlyHuman();check=false;
-            
+                    case 1:playOnlyHuman();check=false;continue;
+                    case 2:playWithComputer();check=false;continue;
                 }
             }
             else{
@@ -37,7 +37,90 @@ public class PlayGame {
         while(!check);
     }
 
-    
+    public void playWithComputer()
+    {
+        System.out.print("Enter The Number of Player: ");
+        numberOfPlayer = in.nextInt();
+        Human[] players;
+
+
+        if((numberOfPlayer>=1)&&(numberOfPlayer<=Integer.MAX_VALUE))
+        {
+            players = new Human[numberOfPlayer];
+        }
+        else {
+            System.out.println("Invalid Input");
+            return;
+        }
+
+        int index = 1;
+        for(int i=0;i<numberOfPlayer;i++)
+        {
+            System.out.print("Enter The Name Of Player "+index+": ");
+            index++;
+            String name;
+            name = in.next();
+            //System.out.println(name);
+            players[i] = new Human();
+            players[i].setName(name);
+        }
+        Computer comp = new Computer();
+        comp.setName("Bot");
+
+        System.out.println("Game Starts: ");
+        createInterface();
+
+
+
+        while(true) {
+            int st = 0;
+            for (Human player : players) {
+
+                System.out.println("Turn Of: " + player.getName());
+                boolean check = true;
+                do {
+                    if (!check) {
+                        System.out.println("Invalid Move, Try Again");
+                    }
+                    int[] res = player.makeMove();
+                    check = game.changeState(res[0], res[1], st);
+                }
+                while (!check);
+                st++;
+                int val = game.chechWinner();
+                if (val != -1) {
+                    System.out.println("\n\nWinner is: " + players[val].getName()+"\n\n");
+                    return;
+                }
+                if (game.isFull()) {
+                    System.out.println("\n\nGame Draw!!\n\n");
+                    return;
+                }
+            }
+
+            System.out.println("Turn Of: " + comp.getName());
+            boolean check = true;
+            do {
+                if (!check) {
+                    System.out.println("Invalid Move, Try Again");
+                }
+                int[] res = comp.makeMove(game.getRow(),game.getColumn());
+                check = game.changeState(res[0], res[1], st);
+            }
+            while (!check);
+            st++;
+            int val = game.chechWinner();
+            if (val != -1) {
+                System.out.println("\n\nWinner is: " + comp.getName()+"\n\n");
+                return;
+            }
+            if (game.isFull()) {
+                System.out.println("\n\nGame Draw!!\n\n");
+                return;
+            }
+        }
+
+    }
 
     public void playOnlyHuman()
     {
@@ -48,7 +131,7 @@ public class PlayGame {
 
         if((numberOfPlayer>1)&&(numberOfPlayer<=Integer.MAX_VALUE))
         {
-               players = new Human[numberOfPlayer];
+            players = new Human[numberOfPlayer];
         }
         else {
             System.out.println("Invalid Input");
@@ -69,6 +152,7 @@ public class PlayGame {
 
         System.out.println("Game Starts: ");
         createInterface();
+
 
 
         play(players);
