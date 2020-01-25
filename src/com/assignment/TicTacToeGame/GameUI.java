@@ -15,7 +15,7 @@ final public class GameUI implements GameWithWinningCriteria {
     private int columnCriteria;
     private int diagonalCriteria;
 
-    private int[] Board;
+    private int[][] Board;
 
     @Override
     public void setExists(boolean exists) {
@@ -89,12 +89,16 @@ final public class GameUI implements GameWithWinningCriteria {
 
     public void createUI()
     {
-        BigInteger size = new BigInteger("1");
-        size = BigInteger.valueOf(row);
-        size = size.multiply(BigInteger.valueOf(column));
 
-        Board = new int[size.intValue()];
-        Arrays.fill(Board,-1);
+        Board = new int[row][column];
+        //Arrays.fill(Board,-1);
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<column;j++)
+            {
+                Board[i][j] = -1;
+            }
+        }
         printGame();
 
     }
@@ -110,24 +114,28 @@ final public class GameUI implements GameWithWinningCriteria {
         int cur_row = 0;
         int cur_col = 0;
         System.out.print("\n");
-        for (int val : Board) {
-            if (val != -1)
-                System.out.print(" " + val + " ");
-            else
-                System.out.print("   ");
+        for (int i=0;i<row;i++) {
+            for(int j=0;j<column;j++) {
 
-
-            cur_col++;
-            if (cur_col == column) {
-                cur_col = 0;
-                cur_row++;
-                if (cur_row != row)
-                    System.out.print("\n" + underRow + "\n");
+                int val = Board[i][j];
+                if (val != -1)
+                    System.out.print(" " + val + " ");
                 else
-                    System.out.print("\n");
+                    System.out.print("   ");
 
-            } else {
-                System.out.print("|");
+
+                cur_col++;
+                if (cur_col == column) {
+                    cur_col = 0;
+                    cur_row++;
+                    if (cur_row != row)
+                        System.out.print("\n" + underRow + "\n");
+                    else
+                        System.out.print("\n");
+
+                } else {
+                    System.out.print("|");
+                }
             }
 
         }
@@ -136,30 +144,140 @@ final public class GameUI implements GameWithWinningCriteria {
 
     public boolean changeState(int x,int y,int state)
     {
-        int cur_row = 1;
-        int cur_col = 0;
-        int index = 0;
-        for(int val:Board)
-        {
-            cur_col++;
-            if(cur_col>column)
-            {
-                cur_col = 1;
-                cur_row++;
-            }
 
-            System.out.println(cur_col+" "+cur_row);
-            if((cur_col==y) && (cur_row==x))
-            {
-                Board[index] = state;
-                printGame();
-                return true;
-            }
-            index++;
+
+
+        if((x>row) || (x<1) || (y<1) || (y>column))
+        {
+            return false;
         }
 
-        return false;
+        if(Board[x-1][y-1]!=-1)
+        {
+            return false;
+        }
+
+        Board[x-1][y-1] = state;
+        printGame();
+
+        return true;
 
     }
+    public int chechWinner()
+    {
+
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<column;j++)
+            {
+                int val = Board[i][j];
+                int count = 0;
+                for(int k=0;(k<rowCriteria)&&(k+j<column);k++)
+                {
+                    if(val==Board[i][j+k])
+                    {
+                        count++;
+                    }
+                    else
+                        break;
+                }
+                if(count==rowCriteria)
+                {
+                    return val;
+                }
+            }
+        }
+
+        for(int j=0;j<column;j++)
+        {
+            for(int i=0;i<row;i++)
+            {
+                int val = Board[i][j];
+                int count = 0;
+                for(int k=0;(k<columnCriteria)&&(k+i<row);k++)
+                {
+                    if(val==Board[i+k][j])
+                    {
+                        count++;
+                    }
+                    else
+                        break;
+                }
+                if(count==columnCriteria)
+                {
+                    return val;
+                }
+            }
+        }
+
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<column;j++) {
+                int val = Board[i][j];
+                int curx = i;
+                int cury = j;
+                int count = 0;
+                while(curx<row && cury<column)
+                {
+                    if(val==Board[curx][cury])
+                    {
+                        count++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    curx++;
+                    cury++;
+                }
+                if(count==diagonalCriteria)return val;
+            }
+        }
+
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<column;j++)
+            {
+                int val = Board[i][j];
+                int curx = i;
+                int cury = j;
+                int count = 0;
+
+                while(curx<row && cury>=0)
+                {
+                    if(val==Board[curx][cury])
+                    {
+                        count++;
+                    }
+                    else
+                        break;
+
+                    curx++;
+                    cury--;
+                }
+
+                if(count==diagonalCriteria)return val;
+
+            }
+        }
+
+        return -1;
+
+    }
+    public boolean isFull()
+    {
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<column;j++) {
+                int val = Board[i][j];
+                if (val == -1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
 
 }
