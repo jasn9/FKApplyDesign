@@ -41,12 +41,12 @@ public class PlayGame {
     {
         System.out.print("Enter The Number of Player: ");
         numberOfPlayer = in.nextInt();
-        Human[] players;
+        GamePlayer[] players;
 
 
-        if((numberOfPlayer>=1)&&(numberOfPlayer<=Integer.MAX_VALUE))
+        if((numberOfPlayer>=1)&&(numberOfPlayer+1<=Integer.MAX_VALUE))
         {
-            players = new Human[numberOfPlayer];
+            players = new GamePlayer[numberOfPlayer+1];
         }
         else {
             System.out.println("Invalid Input");
@@ -64,61 +64,12 @@ public class PlayGame {
             players[i] = new Human();
             players[i].setName(name);
         }
-        Computer comp = new Computer();
-        comp.setName("Bot");
-
+        players[numberOfPlayer] = new Computer();
+        players[numberOfPlayer].setName("Bot");
         System.out.println("Game Starts: ");
         createInterface();
-
-
-
-        while(true) {
-            int st = 0;
-            for (Human player : players) {
-
-                System.out.println("Turn Of: " + player.getName());
-                boolean check = true;
-                do {
-                    if (!check) {
-                        System.out.println("Invalid Move, Try Again");
-                    }
-                    int[] res = player.makeMove();
-                    check = game.changeState(res[0], res[1], st);
-                }
-                while (!check);
-                st++;
-                int val = game.chechWinner();
-                if (val != -1) {
-                    System.out.println("\n\nWinner is: " + players[val].getName()+"\n\n");
-                    return;
-                }
-                if (game.isFull()) {
-                    System.out.println("\n\nGame Draw!!\n\n");
-                    return;
-                }
-            }
-
-            System.out.println("Turn Of: " + comp.getName());
-            boolean check = true;
-            do {
-                if (!check) {
-                    System.out.println("Invalid Move, Try Again");
-                }
-                int[] res = comp.makeMove(game.getRow(),game.getColumn());
-                check = game.changeState(res[0], res[1], st);
-            }
-            while (!check);
-            st++;
-            int val = game.chechWinner();
-            if (val != -1) {
-                System.out.println("\n\nWinner is: " + comp.getName()+"\n\n");
-                return;
-            }
-            if (game.isFull()) {
-                System.out.println("\n\nGame Draw!!\n\n");
-                return;
-            }
-        }
+        play(players);
+        return;
 
     }
 
@@ -152,9 +103,6 @@ public class PlayGame {
 
         System.out.println("Game Starts: ");
         createInterface();
-
-
-
         play(players);
         return;
 
@@ -162,21 +110,31 @@ public class PlayGame {
 
 
 
-    private void play(Human[] players)
+    private void play(GamePlayer[] players)
     {
         while(true) {
             int st = 0;
-            for (Human player : players) {
+            for (GamePlayer player : players) {
                 System.out.println("Turn Of: " + player.getName());
                 boolean check = true;
                 do {
                     if (!check) {
                         System.out.println("Invalid Move, Try Again");
                     }
-                    int[] res = player.makeMove();
+                    int[] res;
+                    if(player instanceof Human)
+                        res= ((Human)player).makeMove();
+                    else
+                        res = ((Computer)player).makeMove(game.getRow(),game.getColumn());
+
                     check = game.changeState(res[0], res[1], st);
+                    if(check)
+                    {
+                        System.out.println("\n\nBot move: "+res[0]+" "+res[1]+"\n");
+                    }
                 }
                 while (!check);
+
                 st++;
                 int val = game.chechWinner();
                 if (val != -1) {
