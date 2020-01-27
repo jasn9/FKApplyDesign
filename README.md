@@ -1,8 +1,10 @@
 # FKApplyDesign
 
-Design and Implemente Tic-Tac-Toe Game API
+<B>Design and Implement Tic-Tac-Toe Game API</B>
 
-Interfaces:-
+<B>Run</B> this product by compiling and executing <I> main.java </I>.
+
+<B>Interfaces:-</B>
 
 1> Design starts with Game as abstract interface of TicTacToe game with infinite row and column.
 
@@ -14,7 +16,7 @@ of row ,column , and diagonal.
 
 4> GamePlayer Interface is abstract type of players which play game. 
 
-CLasses:-
+<B>CLasses:-</B>
 
 1> GameUI class implements GameWithWinningCriteria and defines UI datastructure of grid. Also defines 
 behavious of displaying grid, change in grid, checking if anyone win, then finding if grid is 
@@ -29,7 +31,7 @@ PlayWithComputer with common behaviour play where user play game.
 
 5> Main Class starts PlayGame class which starts game.
 
-Why this design?
+<B>Why this design?</B>
 
 1> Well for one we can manipulate the size of grid.
 
@@ -41,3 +43,4 @@ Why this design?
 
 5> Make move function in Human and computer is purely dynammic and can be designed in any way
 independently.
+
