@@ -167,7 +167,7 @@ final public class GameUI implements GameWithWinningCriteria {
 
     }
 
-    public boolean changeState(int x,int y,String  state)
+    public boolean changeState(int x,int y,String  state,boolean backMove)
     {
 
 
@@ -180,7 +180,7 @@ final public class GameUI implements GameWithWinningCriteria {
         y--;
         //System.out.println(this.getLevel()+" "+x+" "+y);
         GameUI val = findDepthVal(this,x,y);
-        if(!(val.res).equals("-1"))
+        if((!(val.res).equals("-1")) && (backMove==false))
         {
             return false;
         }

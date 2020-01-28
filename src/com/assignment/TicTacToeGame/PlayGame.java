@@ -109,6 +109,7 @@ public class PlayGame {
             for (GamePlayer player : players) {
                 System.out.println("Turn Of: " + player.getName());
                 boolean check = true;
+                int back_move = 2;
                 do {
                     if (!check) {
                         System.out.println("Invalid Move, Try Again");
@@ -119,14 +120,24 @@ public class PlayGame {
                     else
                         res = ((Computer)player).makeMove(game.getRow(),game.getColumn());
 
-                    check = game.changeState(res[0], res[1], player.getState());
+                    check = game.changeState(res[0], res[1], player.getState(),false);
+
+                    if(player instanceof Human) {
+                        System.out.println("Want To Make Back Move Press 1!\nTo Continue Press 2!");
+                        back_move = in.nextInt();
+                        if (back_move == 1) {
+                            game.changeState(res[0], res[1], "-1", true);
+
+                        }
+                    }
+
                     if(check)
                     {
                         if(player instanceof Computer)
                         System.out.println("\n\nBot move: "+res[0]+" "+res[1]+"\n");
                     }
                 }
-                while (!check);
+                while ((!check) || (back_move==1));
 
                 st++;
                 String val = game.checkWinner();
