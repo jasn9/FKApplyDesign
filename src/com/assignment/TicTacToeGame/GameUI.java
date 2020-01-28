@@ -5,6 +5,7 @@ import sun.jvm.hotspot.debugger.posix.elf.ELFSectionHeader;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.HashMap;
 
 final public class GameUI implements GameWithWinningCriteria {
 
@@ -14,8 +15,11 @@ final public class GameUI implements GameWithWinningCriteria {
     private int rowCriteria;
     private int columnCriteria;
     private int diagonalCriteria;
+    private int level;
 
-    private int[][] Board;
+    private GameUI[][] Board;
+    private String res;
+
 
     @Override
     public void setExists(boolean exists) {
@@ -25,6 +29,16 @@ final public class GameUI implements GameWithWinningCriteria {
     @Override
     public boolean getExists() {
         return exists;
+    }
+
+    public void setLevel(int level)
+    {
+        this.level = level;
+    }
+
+    public int getLevel()
+    {
+        return level;
     }
 
     @Override
@@ -87,94 +101,125 @@ final public class GameUI implements GameWithWinningCriteria {
         return diagonalCriteria;
     }
 
-    public void createUI()
-    {
+    public void createUI() {
 
-        Board = new int[row][column];
+        Board = new GameUI[row][column];
+        this.res = "-1";
         //Arrays.fill(Board,-1);
-        for(int i=0;i<row;i++)
-        {
-            for(int j=0;j<column;j++)
-            {
-                Board[i][j] = -1;
-            }
-        }
-        printGame();
+        //System.out.println(level);
+        if (level>0) {
 
-    }
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < column; j++) {
+                    Board[i][j] = new GameUI();
+                    Board[i][j].setRow(row);
+                    Board[i][j].setColumn(column);
+                    Board[i][j].setDiagonalCriteria(diagonalCriteria);
+                    Board[i][j].setRowCriteria(rowCriteria);
+                    Board[i][j].setLevel(level - 1);
+                    Board[i][j].createUI();
 
-    private void printGame() {
-
-        String underRow = "-";
-        for (int j = 0; j < 3; j++)
-            for (int i = 0; i < column; i++) {
-                underRow += "-";
-            }
-        underRow += "-";
-        int cur_row = 0;
-        int cur_col = 0;
-        System.out.print("\n");
-        for (int i=0;i<row;i++) {
-            for(int j=0;j<column;j++) {
-
-                int val = Board[i][j];
-                if (val != -1)
-                    System.out.print(" " + val + " ");
-                else
-                    System.out.print("   ");
-
-
-                cur_col++;
-                if (cur_col == column) {
-                    cur_col = 0;
-                    cur_row++;
-                    if (cur_row != row)
-                        System.out.print("\n" + underRow + "\n");
-                    else
-                        System.out.print("\n");
-
-                } else {
-                    System.out.print("|");
                 }
             }
+        }
+    }
+
+    public GameUI findDepthVal(GameUI parent,int idx,int idy)
+    {
+        GameUI cur = parent;
+        while(cur.getLevel()!=0)
+        {
+             //System.out.println(cur.getLevel()+" "+idx+" "+idy);
+             int ix = idx/(int)Math.pow(row,cur.getLevel()-1);
+             int iy = idy/(int)Math.pow(column,cur.getLevel()-1);
+             idx = idx%3;
+             idy = idy%3;
+             cur = cur.Board[ix][iy];
 
         }
+        return cur;
+    }
+
+    public void printGame() {
+
+
+            //System.out.print("\n");
+            for (int i = 0; i < Math.pow(row,level); i++) {
+                for (int j = 0; j < Math.pow(column,level); j++) {
+                    //GameUI cur = this;
+                    int idx = i;
+                    int idy = j;
+
+                    GameUI val = findDepthVal(this,idx,idy);
+
+                    if (!val.res.equals("-1"))
+                        System.out.print(" " + val.res + " ");
+                    else
+                        System.out.print(" N ");
+
+                    if((j+1)==Math.pow(column,level))
+                    {
+                        System.out.println();
+                    }
+                }
+
+            }
 
     }
 
-    public boolean changeState(int x,int y,int state)
+    public boolean changeState(int x,int y,String  state)
     {
 
 
 
-        if((x>row) || (x<1) || (y<1) || (y>column))
+        if((x>Math.pow(row,level)) || (x<1) || (y<1) || (y>Math.pow(column,level)))
         {
             return false;
         }
-
-        if(Board[x-1][y-1]!=-1)
+        x--;
+        y--;
+        //System.out.println(this.getLevel()+" "+x+" "+y);
+        GameUI val = findDepthVal(this,x,y);
+        if(!(val.res).equals("-1"))
         {
             return false;
         }
-
-        Board[x-1][y-1] = state;
-        printGame();
-
+        //System.out.println(state+" "+val.getLevel()+" "+val.res);
+        //printGame();
+        val.res = state;
+        System.out.println();
+        //printGame();
         return true;
 
     }
-    public int chechWinner()
+    public String checkWinner()
     {
+
+        if(this.level==0)
+        {
+            return this.res;
+        }
 
         for(int i=0;i<row;i++)
         {
             for(int j=0;j<column;j++)
             {
-                int val = Board[i][j];
+                //System.out.println(this.getLevel()+" "+i+" "+j);
+                String z = Board[i][j].checkWinner();
+                Board[i][j].res = z;
+                //System.out.println(this.getLevel()+" "+i+" "+j+"*"+z);
+            }
+        }
+
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<column;j++)
+            {
+                String val = Board[i][j].res;
                 int count = 0;
                 for(int k=0;(k<rowCriteria)&&(k+j<column);k++)
                 {
-                    if(val==Board[i][j+k])
+                    if(val.equals(Board[i][j+k].res))
                     {
                         count++;
                     }
@@ -192,11 +237,11 @@ final public class GameUI implements GameWithWinningCriteria {
         {
             for(int i=0;i<row;i++)
             {
-                int val = Board[i][j];
+                String  val = Board[i][j].res;
                 int count = 0;
                 for(int k=0;(k<columnCriteria)&&(k+i<row);k++)
                 {
-                    if(val==Board[i+k][j])
+                    if(val.equals(Board[i+k][j].res))
                     {
                         count++;
                     }
@@ -213,13 +258,13 @@ final public class GameUI implements GameWithWinningCriteria {
         for(int i=0;i<row;i++)
         {
             for(int j=0;j<column;j++) {
-                int val = Board[i][j];
+                String  val = Board[i][j].res;
                 int curx = i;
                 int cury = j;
                 int count = 0;
                 while(curx<row && cury<column)
                 {
-                    if(val==Board[curx][cury])
+                    if(val.equals(Board[curx][cury].res))
                     {
                         count++;
                     }
@@ -238,14 +283,14 @@ final public class GameUI implements GameWithWinningCriteria {
         {
             for(int j=0;j<column;j++)
             {
-                int val = Board[i][j];
+                String val = Board[i][j].res;
                 int curx = i;
                 int cury = j;
                 int count = 0;
 
                 while(curx<row && cury>=0)
                 {
-                    if(val==Board[curx][cury])
+                    if(val.equals(Board[curx][cury].res))
                     {
                         count++;
                     }
@@ -261,16 +306,16 @@ final public class GameUI implements GameWithWinningCriteria {
             }
         }
 
-        return -1;
+        return "-1";
 
     }
     public boolean isFull()
     {
-        for(int i=0;i<row;i++)
+        for(int i=0;i<Math.pow(row,level);i++)
         {
-            for(int j=0;j<column;j++) {
-                int val = Board[i][j];
-                if (val == -1) {
+            for(int j=0;j<Math.pow(column,level);j++) {
+                GameUI val = findDepthVal(this,i,j);
+                if ((val.res).equals("-1")) {
                     return false;
                 }
             }

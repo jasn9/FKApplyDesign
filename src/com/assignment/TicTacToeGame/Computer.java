@@ -4,7 +4,8 @@ import java.util.Random;
 
 public class Computer implements GamePlayer {
 
-    String name;
+    private String name;
+    private String state;
 
     @Override
     public void setName(String name) {
@@ -16,6 +17,15 @@ public class Computer implements GamePlayer {
         return name;
     }
 
+    public void setState(String state)
+    {
+        this.state = state;
+    }
+
+    public String getState()
+    {
+        return state;
+    }
 
     public int[] makeMove(int row,int column) {
         Random r = new Random();

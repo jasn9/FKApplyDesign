@@ -23,9 +23,11 @@ public interface GameWithWinningCriteria extends GameWithInterface{
     void setRowCriteria(int rowCriteria);
     void setColumnCriteria(int columnCriteria);
     void setDiagonalCriteria(int diagonalCriteria);
+    //void setLevel(int level);
 
     int getRowCriteria();
     int getColumnCriteria();
     int getDiagonalCriteria();
+    //int getLevel();
 
 }

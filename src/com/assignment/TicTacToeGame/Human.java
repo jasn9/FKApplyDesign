@@ -4,7 +4,9 @@ import java.util.Scanner;
 
 public class Human implements GamePlayer {
 
-    String name;
+    private String name;
+    private String  state;
+
 
     @Override
     public void setName(String name) {
@@ -16,7 +18,17 @@ public class Human implements GamePlayer {
         return name;
     }
 
+    @Override
+    public void setState(String state)
+    {
+        this.state = state;
+    }
 
+    @Override
+    public String getState()
+    {
+        return state;
+    }
 
     public int[] makeMove() {
 

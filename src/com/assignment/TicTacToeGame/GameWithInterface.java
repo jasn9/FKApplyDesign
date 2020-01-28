@@ -13,4 +13,5 @@ public interface GameWithInterface extends Game {
     int getRow();
     int getColumn();
 
+
 }
