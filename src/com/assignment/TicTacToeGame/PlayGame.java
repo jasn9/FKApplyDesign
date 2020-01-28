@@ -8,14 +8,19 @@ public class PlayGame {
     private Scanner in;
     private GameUI game;
     private HashMap<String,Integer> mp;
+    private static Leaderboard leaderboard;
+    private int level = 0;
+
     public void playGame()
     {
-
+        leaderboard = new Leaderboard();
         boolean check = true;
 
         do {
-            System.out.print("Enter 1:Play With Friends\nEnter 2:Play With Computer\nEnter 0:To Exit\nChoice: ");
             in = new Scanner(System.in);
+            System.out.print("Enter The Level: ");
+            level = in.nextInt();
+            System.out.print("Enter 1:Play With Friends\nEnter 2:Play With Computer\nEnter 0:To Exit\nChoice: ");
 
             int choice = in.nextInt();
 
@@ -134,7 +139,7 @@ public class PlayGame {
                     if(check)
                     {
                         if(player instanceof Computer)
-                        System.out.println("\n\nBot move: "+res[0]+" "+res[1]+"\n");
+                            System.out.println("\n\nBot move: "+res[0]+" "+res[1]+"\n");
                     }
                 }
                 while ((!check) || (back_move==1));
@@ -143,11 +148,15 @@ public class PlayGame {
                 String val = game.checkWinner();
                 if (!val.equals("-1")) {
                     System.out.println("\n\nWinner is: " + players[mp.get(val)].getName()+"\n\n");
+                    leaderboard.addIn(players[mp.get(val)].getName(),level);
+                    System.out.print("Leader Board\n");
+                    leaderboard.display();
                     return;
                 }
                 game.printGame();
                 if (game.isFull()) {
                     System.out.println("\n\nGame Draw!!\n\n");
+                    leaderboard.display();
                     return;
                 }
             }
@@ -158,12 +167,12 @@ public class PlayGame {
     {
         game = new GameUI();
         game.setExists(true);
-        game.setRow(4);
-        game.setColumn(4);
-        game.setRowCriteria(4);
-        game.setColumnCriteria(4);
-        game.setDiagonalCriteria(4);
-        game.setLevel(1);
+        game.setRow(3);
+        game.setColumn(3);
+        game.setRowCriteria(3);
+        game.setColumnCriteria(3);
+        game.setDiagonalCriteria(3);
+        game.setLevel(level);
         if(!game.getExists())
         {
             System.out.println("Game Does Not Exists");

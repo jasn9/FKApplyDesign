@@ -129,12 +129,12 @@ final public class GameUI implements GameWithWinningCriteria {
         GameUI cur = parent;
         while(cur.getLevel()!=0)
         {
-             //System.out.println(cur.getLevel()+" "+idx+" "+idy);
-             int ix = idx/(int)Math.pow(row,cur.getLevel()-1);
-             int iy = idy/(int)Math.pow(column,cur.getLevel()-1);
-             idx = idx%3;
-             idy = idy%3;
-             cur = cur.Board[ix][iy];
+            //System.out.println(cur.getLevel()+" "+idx+" "+idy);
+            int ix = idx/(int)Math.pow(row,cur.getLevel()-1);
+            int iy = idy/(int)Math.pow(column,cur.getLevel()-1);
+            idx = idx%row;
+            idy = idy%column;
+            cur = cur.Board[ix][iy];
 
         }
         return cur;
@@ -143,27 +143,27 @@ final public class GameUI implements GameWithWinningCriteria {
     public void printGame() {
 
 
-            //System.out.print("\n");
-            for (int i = 0; i < Math.pow(row,level); i++) {
-                for (int j = 0; j < Math.pow(column,level); j++) {
-                    //GameUI cur = this;
-                    int idx = i;
-                    int idy = j;
+        //System.out.print("\n");
+        for (int i = 0; i < Math.pow(row,level); i++) {
+            for (int j = 0; j < Math.pow(column,level); j++) {
+                //GameUI cur = this;
+                int idx = i;
+                int idy = j;
 
-                    GameUI val = findDepthVal(this,idx,idy);
+                GameUI val = findDepthVal(this,idx,idy);
 
-                    if (!val.res.equals("-1"))
-                        System.out.print(" " + val.res + " ");
-                    else
-                        System.out.print(" N ");
+                if (!val.res.equals("-1"))
+                    System.out.print(" " + val.res + " ");
+                else
+                    System.out.print(" N ");
 
-                    if((j+1)==Math.pow(column,level))
-                    {
-                        System.out.println();
-                    }
+                if((j+1)==Math.pow(column,level))
+                {
+                    System.out.println();
                 }
-
             }
+
+        }
 
     }
 
