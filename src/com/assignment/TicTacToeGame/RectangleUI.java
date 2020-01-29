@@ -1,14 +1,6 @@
 package com.assignment.TicTacToeGame;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
-import sun.jvm.hotspot.debugger.posix.elf.ELFSectionHeader;
-
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Stack;
-
-public class GameUI implements GameWithWinningCriteria {
+public class RectangleUI implements GridUI {
 
     private boolean exists;
     private int row;
@@ -17,7 +9,7 @@ public class GameUI implements GameWithWinningCriteria {
     private int columnCriteria;
     private int diagonalCriteria;
     private int level;
-    private GameUI[][] Board;
+    private RectangleUI[][] Board;
     private String res;
 
 
@@ -103,7 +95,7 @@ public class GameUI implements GameWithWinningCriteria {
 
     public void createUI() {
 
-        Board = new GameUI[row][column];
+        Board = new RectangleUI[row][column];
         this.res = "-1";
         //Arrays.fill(Board,-1);
         //System.out.println(level);
@@ -111,7 +103,7 @@ public class GameUI implements GameWithWinningCriteria {
 
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < column; j++) {
-                    Board[i][j] = new GameUI();
+                    Board[i][j] = new RectangleUI();
                     Board[i][j].setRow(row);
                     Board[i][j].setColumn(column);
                     Board[i][j].setDiagonalCriteria(diagonalCriteria);
@@ -124,9 +116,9 @@ public class GameUI implements GameWithWinningCriteria {
         }
     }
 
-    public GameUI findDepthVal(GameUI parent,int idx,int idy)
+    public RectangleUI findDepthVal(RectangleUI parent, int idx, int idy)
     {
-        GameUI cur = parent;
+        RectangleUI cur = parent;
         while(cur.getLevel()!=0)
         {
             int ix = idx/(int)Math.pow(row,cur.getLevel()-1);
@@ -155,7 +147,7 @@ public class GameUI implements GameWithWinningCriteria {
                 int idx = i;
                 int idy = j;
 
-                GameUI val = findDepthVal(this,idx,idy);
+                RectangleUI val = findDepthVal(this,idx,idy);
 
                 if (!val.res.equals("-1"))
                     System.out.print(" " + val.res + " ");
@@ -182,7 +174,7 @@ public class GameUI implements GameWithWinningCriteria {
         x--;
         y--;
         //System.out.println(this.getLevel()+" "+x+" "+y);
-        GameUI val = findDepthVal(this,x,y);
+        RectangleUI val = findDepthVal(this,x,y);
         if((!(val.res).equals("-1")) && (backMove==false))
         {
             return false;
@@ -351,7 +343,7 @@ public class GameUI implements GameWithWinningCriteria {
         for(int i=0;i<Math.pow(row,level);i++)
         {
             for(int j=0;j<Math.pow(column,level);j++) {
-                GameUI val = findDepthVal(this,i,j);
+                RectangleUI val = findDepthVal(this,i,j);
                 if ((val.res).equals("-1")) {
                     return false;
                 }

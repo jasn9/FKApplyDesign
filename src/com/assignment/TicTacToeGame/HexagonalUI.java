@@ -1,9 +1,6 @@
 package com.assignment.TicTacToeGame;
 
-import java.lang.management.BufferPoolMXBean;
-import java.util.Stack;
-
-public class HexagonalUI implements GameWithWinningCriteria{
+public class HexagonalUI implements GridUI {
 
     private boolean exists;
     private int row;

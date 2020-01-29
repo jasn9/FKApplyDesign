@@ -1,6 +1,6 @@
 package com.assignment.TicTacToeGame;
 
-public class GameUIConnect4Game extends GameUI {
+public class SquareUIConnect4Game extends RectangleUI {
 
     @Override
     public boolean changeState(int x, int y, String state, boolean backMove) {
@@ -12,7 +12,7 @@ public class GameUIConnect4Game extends GameUI {
         }
         x--;
         y--;
-        GameUI val = findDepthVal(this,x,y);
+        RectangleUI val = findDepthVal(this,x,y);
         if((!(val.getRes()).equals("-1")) && (backMove==false))
         {
             return false;

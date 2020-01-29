@@ -2,12 +2,11 @@ package com.assignment.TicTacToeGame;
 
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.Stack;
 
 public class PlayGame {
 
     private Scanner in;
-    private GameWithWinningCriteria game;
+    private GridUI game;
     private HashMap<String,Integer> mp;
     private Leaderboard leaderboard;
     private int level = 0;
@@ -186,7 +185,7 @@ public class PlayGame {
             System.out.print("Choice: ");
             choice = in.nextInt();
             if (choice == 1) {
-                game = new GameUI();
+                game = new RectangleUI();
                 game.setRow(3);
                 game.setColumn(3);
                 game.setRowCriteria(3);
@@ -206,7 +205,7 @@ public class PlayGame {
                 else{
                     if(choice == 3)
                     {
-                        game = new GameUIConnect4Game();
+                        game = new SquareUIConnect4Game();
                         game.setRow(6);
                         game.setColumn(7);
                         game.setRowCriteria(4);

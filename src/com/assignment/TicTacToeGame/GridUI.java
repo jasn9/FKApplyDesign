@@ -1,6 +1,6 @@
 package com.assignment.TicTacToeGame;
 
-public interface GameWithWinningCriteria extends GameWithInterface{
+public interface GridUI extends Grid {
 
     @Override
     void setExists(boolean exists);
