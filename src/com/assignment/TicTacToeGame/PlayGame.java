@@ -52,20 +52,20 @@ public class PlayGame {
         GamePlayer[] players;
         int numberOfPlayer = 2;
         players = new GamePlayer[numberOfPlayer];
-
-        int index = 0;
+        // flag
+        int compterIsPlaying = 0;
         mp= new HashMap<>();
 
         // for only computer play
         if(flg) {
-            index = 1;
+            compterIsPlaying = 1;
             players[numberOfPlayer-1] = new Computer();
             players[numberOfPlayer-1].setName("Bot");
-            mp.put("O",numberOfPlayer-index);
+            mp.put("O",numberOfPlayer-compterIsPlaying);
             players[numberOfPlayer-1].setState("O");
         }
 
-        for(int i=0;i<numberOfPlayer-index;i++)
+        for(int i=0;i<numberOfPlayer-compterIsPlaying;i++)
         {
             System.out.print("Enter The Name Of Player "+(i+1)+": ");
             String name;
@@ -75,15 +75,15 @@ public class PlayGame {
             players[i].setName(name);
 
             System.out.println("Enter the state with which you want to play: ");
-            name = in.next();
+            String state = in.next();
 
-            while (mp.containsKey(name)){
+            while (mp.containsKey(state)){
                 System.out.println("State Already Taken: ");
-                name = in.next();
+                state = in.next();
             }
 
-            mp.put(name,i);
-            (players[i]).setState(name);
+            mp.put(state,i);
+            (players[i]).setState(state);
         }
 
         // in computer init it
@@ -116,12 +116,12 @@ public class PlayGame {
 
                 GamePlayer player = players[i];
 
-                System.out.println("Turn Of: " + player.getName());
+                System.out.println("\nTurn Of: " + player.getName());
                 boolean check = true;
                 int back_move = 2;
                 do {
                     if ((!check)&&(player instanceof Human)) {
-                        System.out.println("Invalid Move, Try Again");
+                        System.out.println("\nInvalid Move, Try Again");
                     }
                     int[] res;
                     if(player instanceof Human)
@@ -134,7 +134,7 @@ public class PlayGame {
 
                     if((check==true) && (player instanceof Human)) {
 
-                        System.out.println("\nPress 1:Want To Make Back Move !\nPress 4:To Continue!");
+                        System.out.println("Press 1:Want To Make Back Move !\nPress 4:To Continue!");
                         back_move = in.nextInt();
 
                         if (back_move == 1) {
@@ -147,7 +147,7 @@ public class PlayGame {
                     if(check)
                     {
                         if(player instanceof Computer)
-                            System.out.println("\n\nBot move: "+res[0]+" "+res[1]+"\n");
+                            System.out.println("Bot move: "+res[0]+" "+res[1]);
                     }
                 }
                 while ((!check) || (back_move==1));
@@ -156,7 +156,7 @@ public class PlayGame {
 
                 String val = game.checkWinner();
                 if (!val.equals("-1")) {
-                    System.out.println("\n\nWinner is: " + players[mp.get(val)].getName()+"\n\n");
+                    System.out.println("\nWinner is: " + players[mp.get(val)].getName()+"\n");
                     leaderboard.addIn(players[mp.get(val)].getName(),level);
                     System.out.print("Leader Board\n");
                     leaderboard.display();
@@ -164,7 +164,7 @@ public class PlayGame {
                 }
                 game.printGame();
                 if (game.isFull()) {
-                    System.out.println("\n\nGame Draw!!\n\n");
+                    System.out.println("\nGame Draw!!\n");
                     leaderboard.display();
                     return;
                 }
@@ -183,7 +183,7 @@ public class PlayGame {
             if (choice == 1) {
                 game = new GameUI();
                 game.setRow(3);
-                game.setColumn(3);
+                game.setColumn(5);
                 game.setRowCriteria(3);
                 game.setColumnCriteria(3);
                 game.setDiagonalCriteria(3);
@@ -191,8 +191,8 @@ public class PlayGame {
             } else {
                 if (choice == 2) {
                     game = new HexagonalUI();
-                    game.setRow(7);
-                    game.setColumn(13);
+                    game.setRow(3);
+                    game.setColumn(3);
                     game.setRowCriteria(4);
                     game.setColumnCriteria(4);
                     game.setDiagonalCriteria(4);

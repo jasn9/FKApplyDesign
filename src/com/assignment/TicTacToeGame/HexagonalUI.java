@@ -101,6 +101,7 @@ public class HexagonalUI implements GameWithWinningCriteria{
     {
         Board = new HexagonalUI[row][column];
         this.res = "-1";
+
         if(level!=0)
         {
             for(int i=0;i<row;i++)
@@ -130,8 +131,8 @@ public class HexagonalUI implements GameWithWinningCriteria{
             //System.out.println(cur.getLevel()+" "+idx+" "+idy);
             int ix = idx/(int)Math.pow(row,cur.getLevel()-1);
             int iy = idy/(int)Math.pow(column,cur.getLevel()-1);
-            idx = idx%row;
-            idy = idy%column;
+            idx = idx%((int)Math.pow(row,cur.getLevel()-1));
+            idy = idy%((int)Math.pow(column,cur.getLevel()-1));
             cur = cur.Board[ix][iy];
         }
         return cur;

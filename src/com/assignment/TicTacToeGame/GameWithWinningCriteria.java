@@ -28,6 +28,15 @@ public interface GameWithWinningCriteria extends GameWithInterface{
     int getRowCriteria();
     int getColumnCriteria();
     int getDiagonalCriteria();
+
+    String checkWinner();
+    void setLevel(int level);
+    int getLevel();
+    void createUI();
+    void printGame();
+    boolean isFull();
+    boolean changeState(int x,int y,String state,boolean back_move);
+
     //int getLevel();
 
 }

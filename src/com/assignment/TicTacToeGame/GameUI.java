@@ -132,8 +132,8 @@ final public class GameUI implements GameWithWinningCriteria {
             //System.out.println(cur.getLevel()+" "+idx+" "+idy);
             int ix = idx/(int)Math.pow(row,cur.getLevel()-1);
             int iy = idy/(int)Math.pow(column,cur.getLevel()-1);
-            idx = idx%row;
-            idy = idy%column;
+            idx = idx%((int)Math.pow(row,cur.getLevel()-1));
+            idy = idy%((int)Math.pow(column,cur.getLevel()-1));
             cur = cur.Board[ix][iy];
 
         }
