@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
 
-final public class GameUI implements GameWithWinningCriteria {
+public class GameUI implements GameWithWinningCriteria {
 
     private boolean exists;
     private int row;
@@ -40,7 +40,7 @@ final public class GameUI implements GameWithWinningCriteria {
     {
         return level;
     }
-
+    public String getRes(){ return res; }
     @Override
     public void setRow(int row) {
         this.row = row;
@@ -129,7 +129,6 @@ final public class GameUI implements GameWithWinningCriteria {
         GameUI cur = parent;
         while(cur.getLevel()!=0)
         {
-            //System.out.println(cur.getLevel()+" "+idx+" "+idy);
             int ix = idx/(int)Math.pow(row,cur.getLevel()-1);
             int iy = idy/(int)Math.pow(column,cur.getLevel()-1);
             idx = idx%((int)Math.pow(row,cur.getLevel()-1));
@@ -188,6 +187,7 @@ final public class GameUI implements GameWithWinningCriteria {
         {
             return false;
         }
+
         //System.out.println(state+" "+val.getLevel()+" "+val.res);
         //printGame();
         val.res = state;

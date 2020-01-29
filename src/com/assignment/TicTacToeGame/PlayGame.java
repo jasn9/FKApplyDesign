@@ -20,7 +20,10 @@ public class PlayGame {
 
         do {
             in = new Scanner(System.in);
-            createInterface();
+            if(!createInterface())
+            {
+                return;
+            }
             System.out.print("\nEnter 1:Play With Friends\nEnter 2:Play With Computer\nEnter 0:To Exit\nChoice: ");
 
             int choice = in.nextInt();
@@ -156,6 +159,7 @@ public class PlayGame {
 
                 String val = game.checkWinner();
                 if (!val.equals("-1")) {
+                    game.printGame();
                     System.out.println("\nWinner is: " + players[mp.get(val)].getName()+"\n");
                     leaderboard.addIn(players[mp.get(val)].getName(),level);
                     System.out.print("Leader Board\n");
@@ -172,18 +176,19 @@ public class PlayGame {
         }
     }
 
-    private void createInterface()
+    private boolean createInterface()
     {
 
-        System.out.println("\nPress1:To Play Square Cell Game\nPress2:To Play Hexagonal Square Game");
+        System.out.println("\nPress1:To Play Square Cell Game\nPress2:To Play Hexagonal Square Game\nPress3:To Play Connect 4 Game\nPress4:To Quit");
         boolean check = true;
+        int choice = 0;
         do {
             System.out.print("Choice: ");
-            int choice = in.nextInt();
+            choice = in.nextInt();
             if (choice == 1) {
                 game = new GameUI();
                 game.setRow(3);
-                game.setColumn(5);
+                game.setColumn(3);
                 game.setRowCriteria(3);
                 game.setColumnCriteria(3);
                 game.setDiagonalCriteria(3);
@@ -191,33 +196,56 @@ public class PlayGame {
             } else {
                 if (choice == 2) {
                     game = new HexagonalUI();
-                    game.setRow(3);
-                    game.setColumn(3);
+                    game.setRow(7);
+                    game.setColumn(13);
                     game.setRowCriteria(4);
                     game.setColumnCriteria(4);
                     game.setDiagonalCriteria(4);
 
                 }
                 else{
-                    System.out.println("Invalid Input");
+                    if(choice == 3)
+                    {
+                        game = new GameUIConnect4Game();
+                        game.setRow(6);
+                        game.setColumn(7);
+                        game.setRowCriteria(4);
+                        game.setColumnCriteria(4);
+                        game.setDiagonalCriteria(4);
+                        level = 1;
+                        game.setLevel(1);
+
+                    }
+                    else {
+                        if(choice==4)
+                        {
+                            System.out.println("Game Ends....!!!!");
+                            return false;
+                        }
+                        System.out.println("Invalid Input");
+                        check = false;
+                    }
                 }
             }
         }
         while (!check);
 
-        game.setExists(true);
-        System.out.print("\nEnter The Level: ");
-        level = in.nextInt();
-        game.setLevel(level);
-        if(!game.getExists())
-        {
-            System.out.println("Game Does Not Exists");
-            return;
+        if(choice!=3) {
+            System.out.print("\nEnter The Level: ");
+            level = in.nextInt();
+            game.setLevel(level);
         }
+
+        game.setExists(true);
+        if (!game.getExists()) {
+            System.out.println("Game Does Not Exists");
+            return false;
+        }
+
         game.createUI();
         System.out.println("\nHere \'*\' Represents Cell Where You Can Make Move, Numbers Represent Co-ordinate Axis Represents With Which You Can Make Move");
         game.printGame();
-
+        return true;
     }
 
 }
