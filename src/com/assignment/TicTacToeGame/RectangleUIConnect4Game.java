@@ -1,6 +1,6 @@
 package com.assignment.TicTacToeGame;
 
-public class SquareUIConnect4Game extends RectangleUI {
+public class RectangleUIConnect4Game extends RectangleUI {
 
     @Override
     public boolean changeState(int x, int y, String state, boolean backMove) {

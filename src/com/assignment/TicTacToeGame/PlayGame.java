@@ -205,7 +205,7 @@ public class PlayGame {
                 else{
                     if(choice == 3)
                     {
-                        game = new SquareUIConnect4Game();
+                        game = new RectangleUIConnect4Game();
                         game.setRow(6);
                         game.setColumn(7);
                         game.setRowCriteria(4);
