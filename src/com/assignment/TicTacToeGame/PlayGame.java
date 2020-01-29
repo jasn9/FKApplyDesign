@@ -2,25 +2,26 @@ package com.assignment.TicTacToeGame;
 
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class PlayGame {
 
     private Scanner in;
-    private GameUI game;
+    private GameWithWinningCriteria game;
     private HashMap<String,Integer> mp;
-    private static Leaderboard leaderboard;
+    private Leaderboard leaderboard;
     private int level = 0;
 
     public void playGame()
     {
         leaderboard = new Leaderboard();
+
         boolean check = true;
 
         do {
             in = new Scanner(System.in);
-            System.out.print("Enter The Level: ");
-            level = in.nextInt();
-            System.out.print("Enter 1:Play With Friends\nEnter 2:Play With Computer\nEnter 0:To Exit\nChoice: ");
+            createInterface();
+            System.out.print("\nEnter 1:Play With Friends\nEnter 2:Play With Computer\nEnter 0:To Exit\nChoice: ");
 
             int choice = in.nextInt();
 
@@ -46,11 +47,11 @@ public class PlayGame {
     {
         //System.out.print("Enter The Number of Player: ");
         //numberOfPlayer = in.nextInt();
-        GamePlayer[] players;
 
+
+        GamePlayer[] players;
         int numberOfPlayer = 2;
         players = new GamePlayer[numberOfPlayer];
-
 
         int index = 0;
         mp= new HashMap<>();
@@ -97,7 +98,7 @@ public class PlayGame {
             System.out.println("NAME: "+obj.getName()+" STATE: "+ obj.getState()+" SERIAL NO: "+mp.get(obj.getState()));
         }
 
-        createInterface();
+
         play(players);
         return;
 
@@ -110,13 +111,16 @@ public class PlayGame {
     private void play(GamePlayer[] players)
     {
         while(true) {
-            int st = 0;
-            for (GamePlayer player : players) {
+
+            for (int i=0 ; i<players.length ;i++) {
+
+                GamePlayer player = players[i];
+
                 System.out.println("Turn Of: " + player.getName());
                 boolean check = true;
                 int back_move = 2;
                 do {
-                    if (!check) {
+                    if ((!check)&&(player instanceof Human)) {
                         System.out.println("Invalid Move, Try Again");
                     }
                     int[] res;
@@ -125,15 +129,19 @@ public class PlayGame {
                     else
                         res = ((Computer)player).makeMove(game.getRow(),game.getColumn());
 
+
                     check = game.changeState(res[0], res[1], player.getState(),false);
 
-                    if(player instanceof Human) {
-                        System.out.println("Want To Make Back Move Press 1!\nTo Continue Press 2!");
+                    if((check==true) && (player instanceof Human)) {
+
+                        System.out.println("\nPress 1:Want To Make Back Move !\nPress 4:To Continue!");
                         back_move = in.nextInt();
+
                         if (back_move == 1) {
                             game.changeState(res[0], res[1], "-1", true);
-
                         }
+
+
                     }
 
                     if(check)
@@ -144,7 +152,8 @@ public class PlayGame {
                 }
                 while ((!check) || (back_move==1));
 
-                st++;
+
+
                 String val = game.checkWinner();
                 if (!val.equals("-1")) {
                     System.out.println("\n\nWinner is: " + players[mp.get(val)].getName()+"\n\n");
@@ -165,13 +174,40 @@ public class PlayGame {
 
     private void createInterface()
     {
-        game = new GameUI();
+
+        System.out.println("\nPress1:To Play Square Cell Game\nPress2:To Play Hexagonal Square Game");
+        boolean check = true;
+        do {
+            System.out.print("Choice: ");
+            int choice = in.nextInt();
+            if (choice == 1) {
+                game = new GameUI();
+                game.setRow(3);
+                game.setColumn(3);
+                game.setRowCriteria(3);
+                game.setColumnCriteria(3);
+                game.setDiagonalCriteria(3);
+
+            } else {
+                if (choice == 2) {
+                    game = new HexagonalUI();
+                    game.setRow(7);
+                    game.setColumn(13);
+                    game.setRowCriteria(4);
+                    game.setColumnCriteria(4);
+                    game.setDiagonalCriteria(4);
+
+                }
+                else{
+                    System.out.println("Invalid Input");
+                }
+            }
+        }
+        while (!check);
+
         game.setExists(true);
-        game.setRow(3);
-        game.setColumn(3);
-        game.setRowCriteria(3);
-        game.setColumnCriteria(3);
-        game.setDiagonalCriteria(3);
+        System.out.print("\nEnter The Level: ");
+        level = in.nextInt();
         game.setLevel(level);
         if(!game.getExists())
         {
@@ -179,6 +215,7 @@ public class PlayGame {
             return;
         }
         game.createUI();
+        System.out.println("\nHere \'*\' Represents Cell Where You Can Make Move, Numbers Represent Co-ordinate Axis Represents With Which You Can Make Move");
         game.printGame();
 
     }
