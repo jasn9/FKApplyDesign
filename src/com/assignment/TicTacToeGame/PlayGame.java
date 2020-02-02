@@ -23,15 +23,15 @@ public class PlayGame {
             {
                 return;
             }
-            System.out.print("\nEnter 1:Play With Friends\nEnter 2:Play With Computer\nEnter 0:To Exit\nChoice: ");
+            System.out.print("\nEnter 1:Play With Friends\nEnter 2:Play With Computer\nChoice: ");
 
             int choice = in.nextInt();
 
-            if((choice>=0)&&(choice<3))
+            if((choice>=1)&&(choice<3))
             {
                 check = true;
                 switch (choice){
-                    case 0:return;
+
                     case 1:playerInit(false);check=false;continue;
                     case 2:playerInit(true);check=false;continue;
                 }
