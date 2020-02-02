@@ -16,6 +16,8 @@ of row ,column , and diagonal.
 
 4> GamePlayer Interface is abstract type of players which play game. 
 
+5> GridIterator Interface is for lambda.
+
 <B>CLasses:-</B>
 
 1> RectangleUI class implements GridUI and defines UI structure of grid. Also defines 
@@ -36,6 +38,8 @@ PlayWithComputer with common behaviour play where user play game.
 7> Leaderboard class.
 
 8> RectangleUIConnect4game extends RectangleUI to perform connect 4 game.
+
+9> CommonGridOperations class implement all grid basic operations.
 
 <B>Why this design?</B>
 
