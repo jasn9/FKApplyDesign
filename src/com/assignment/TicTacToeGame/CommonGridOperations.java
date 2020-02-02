@@ -19,17 +19,35 @@ public class CommonGridOperations {
         return cur;
     }
 
+    public String stringMultiply(String s,int count)
+    {
+        String concatenated = "";
+        for(int i=0;i<count;i++)concatenated+=s;
+        return concatenated;
+    }
+
     public void printGame(GridUI parent) {
 
         System.out.println();
-        System.out.print("   ");
-        for(int i=0;i<Math.pow(parent.getColumn(),parent.getLevel());i++)
-        {
-            System.out.print((i+1)+"  ");
+        int maxDigitRow = (int)Math.floor(Math.log10(Math.pow(parent.getRow(),parent.getLevel())))+1;
+
+        System.out.print(stringMultiply(" ",maxDigitRow+2));
+
+        int maxDigitColumn = (int)Math.floor(Math.log10(Math.pow(parent.getColumn(),parent.getLevel())))+1;
+
+        for(int j=maxDigitColumn-1;j>=0;j--) {
+            for (int i = 0; i < Math.pow(parent.getColumn(), parent.getLevel()); i++) {
+                System.out.print((int)(((i + 1)%(Math.pow(10,j+1)))/(Math.pow(10,j))) + "  ");
+            }
+            System.out.println();
+            System.out.print(stringMultiply(" ",maxDigitRow+2));
         }
         System.out.println();
+        maxDigitRow = (int)Math.floor(Math.log10(Math.pow(parent.getRow(),parent.getLevel())))+1;
         for (int i = 0; i < Math.pow(parent.getRow(),parent.getLevel()); i++) {
-            System.out.print((i+1)+" ");
+
+            int digit = (int)Math.floor(Math.log10(i+1))+1;
+            System.out.print(stringMultiply(" ",maxDigitRow-digit)+(i+1)+" ");
             for (int j = 0; j < Math.pow(parent.getColumn(),parent.getLevel()); j++) {
                 //GameUI cur = this;
                 int idx = i;

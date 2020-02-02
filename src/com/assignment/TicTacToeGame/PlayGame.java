@@ -256,7 +256,9 @@ public class PlayGame {
         game.createUI();
         System.out.println("\nInstructions - ");
         System.out.println(" 1. Here \"*\" Represents Cell Where You Can Make Move.\n 2. Numbers Represent Co-ordinate Axis Represents With Which You Can Make Move.");
-        System.out.println(" 3. In this game \"State\" of a player is value which represent player in grid.\n 4. For instance \"X\" i.e cross is used in Tic-Tac-Toe Game To represent a player.");
+        System.out.println(" 3. Vertical Axis Number Should Be Read From Top To Bottom");
+        System.out.println(" 4. In this game \"State\" of a player is value which represent player in grid.\n 5. For instance \"X\" i.e cross is used in Tic-Tac-Toe Game To represent a player.");
+
         game.printGame();
         return true;
     }
