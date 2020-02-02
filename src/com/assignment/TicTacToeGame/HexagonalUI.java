@@ -12,7 +12,7 @@ public class HexagonalUI implements GridUI {
     private HexagonalUI[][] Board;
     private String res;
     private static int flg = 0;
-    private commonGrid operations;
+    private CommonGridOperations operations;
 
     @Override
     public void setExists(boolean exists) {
@@ -94,7 +94,7 @@ public class HexagonalUI implements GridUI {
         return diagonalCriteria;
     }
 
-    public void setOperations(){ this.operations = new commonGrid(); }
+    public void setOperations(){ this.operations = new CommonGridOperations(); }
 
     public void createUI()
     {

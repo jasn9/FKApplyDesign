@@ -11,7 +11,7 @@ public class RectangleUI implements GridUI {
     private int level;
     private RectangleUI[][] Board;
     private String res;
-    private commonGrid operations;
+    private CommonGridOperations operations;
 
     @Override
     public void setExists(boolean exists) {
@@ -96,7 +96,7 @@ public class RectangleUI implements GridUI {
 
     public void setOperations()
     {
-        this.operations = new commonGrid();
+        this.operations = new CommonGridOperations();
     }
 
     public void createUI() {

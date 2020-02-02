@@ -1,6 +1,6 @@
 package com.assignment.TicTacToeGame;
 
-public class commonGrid {
+public class CommonGridOperations {
 
 
     public GridUI findDepthVal(GridUI parent, int idx, int idy)
