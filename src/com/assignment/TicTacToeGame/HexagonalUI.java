@@ -185,14 +185,17 @@ public class HexagonalUI implements GridUI {
             }
         }
 
-        String val = operations.checkRow(this,(int x)->(x+2));
+
+
+        String val = operations.checkGrid(this,(int x)->(x),(int x)->(x+2),this.getRowCriteria());
         if(!val.equals("-1"))return val;
 
-        val = operations.checkRightDiagonal(this,(int x)->(x+1));
+        val = operations.checkGrid(this,(int x)->(x+1),(int x)->(x+1),this.getDiagonalCriteria());
         if(!val.equals("-1"))return val;
 
-        val = operations.checkLeftDiagonal(this,(int x)->(x+1));
+        val = operations.checkGrid(this,(int x)->(x+1),(int x)->(x-1),this.getDiagonalCriteria());
         if(!val.equals("-1"))return val;
+
 
 
         return "-1";

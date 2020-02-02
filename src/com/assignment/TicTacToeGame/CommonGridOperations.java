@@ -56,7 +56,8 @@ public class CommonGridOperations {
 
     }
 
-    public String checkRow(GridUI parent,GridIterator iter)
+
+    public String checkGrid(GridUI parent,GridIterator iterx,GridIterator itery,int criteria)
     {
         for(int i=0;i<parent.getRow();i++)
         {
@@ -64,135 +65,28 @@ public class CommonGridOperations {
             {
                 if(parent.getBoard(i,j)==null)continue;
                 String val = parent.getBoard(i,j).getRes();
+
                 if(val.equals("-1"))continue;
+
+                int curx = 0;
+                int cury = 0;
                 int count = 0;
-                int cur = 0;
-
-                while ((cur+j)<parent.getColumn())
+                while(((curx+i)<parent.getRow() && (curx+i)>=0)&&((cury+j)<parent.getColumn() && (cury+j)>=0))
                 {
-                    if(parent.getBoard(i,cur+j)==null)break;
-
-                    if(val.equals(parent.getBoard(i,cur+j).getRes()))
+                    if(parent.getBoard(i+curx,j+cury)==null)break;
+                    if(val.equals(parent.getBoard(curx+i,cury+j).getRes()))
                     {
                         count++;
-                        if(count>=parent.getRowCriteria())
-                        {
+                        if(count>=criteria){
                             return val;
                         }
+
                     }
                     else
                         break;
-
-                    cur = iter.Iterator(cur);
+                    curx = iterx.Iterator(curx);
+                    cury = itery.Iterator(cury);
                 }
-                if(count==parent.getRowCriteria())
-                {
-                    return val;
-                }
-            }
-        }
-        return "-1";
-    }
-
-    public String checkColumn(GridUI parent,GridIterator iter)
-    {
-        for(int i=0;i<parent.getRow();i++)
-        {
-            for(int j=0;j<parent.getColumn();j++)
-            {
-                if(parent.getBoard(i,j)==null)continue;
-
-                String  val = parent.getBoard(i,j).getRes();
-                if(val.equals("-1"))continue;
-                int count = 0;
-                int cur = 0;
-
-                while ((cur+i)<parent.getRow())
-                {
-                    if(parent.getBoard(cur+i,j)==null)break;
-
-                    if(val.equals(parent.getBoard(i+cur,j).getRes()))
-                    {
-                        count++;
-                        if(count>=parent.getColumnCriteria())
-                        {
-                            return val;
-                        }
-                    }
-                    else
-                        break;
-
-                    cur = iter.Iterator(cur);
-                }
-
-                if(count==parent.getColumnCriteria())
-                {
-                    return val;
-                }
-            }
-        }
-        return "-1";
-    }
-
-    public String checkRightDiagonal(GridUI parent,GridIterator iter)
-    {
-        for(int i=0;i<parent.getRow();i++)
-        {
-            for(int j=0;j<parent.getColumn();j++) {
-
-                if(parent.getBoard(i,j)==null)continue;
-                String  val = parent.getBoard(i,j).getRes();
-                if(val.equals("-1"))continue;
-
-                int cur = 0;
-                int count = 0;
-                while((cur+i)<parent.getRow() && (cur+j)<parent.getColumn())
-                {
-                    if(parent.getBoard(i+cur,j+cur)==null)break;
-                    if(val.equals(parent.getBoard(i+cur,j+cur).getRes()))
-                    {
-                        count++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                    cur = iter.Iterator(cur);
-                }
-                if(count==parent.getDiagonalCriteria())return val;
-            }
-        }
-        return "-1";
-    }
-
-    public String checkLeftDiagonal(GridUI parent,GridIterator iter)
-    {
-        for(int i=0;i<parent.getRow();i++)
-        {
-            for(int j=0;j<parent.getColumn();j++)
-            {
-
-                if(parent.getBoard(i,j)==null)continue;
-                String val = parent.getBoard(i,j).getRes();
-                if(val.equals("-1"))continue;
-
-                int cur = 0;
-                int count = 0;
-
-                while((cur+i)<parent.getRow() && (j-cur)>=0)
-                {
-                    if(parent.getBoard(cur+i,j-cur)==null)break;
-                    if(val.equals(parent.getBoard(cur+i,j-cur).getRes()))
-                    {
-                        count++;
-                    }
-                    else
-                        break;
-
-                    cur = iter.Iterator(cur);
-                }
-
-                if(count==parent.getDiagonalCriteria())return val;
 
             }
         }
@@ -203,7 +97,7 @@ public class CommonGridOperations {
     {
         for(int i=0;i<Math.pow(parent.getRow(),parent.getLevel());i++)
         {
-            for(int j=0;j<Math.pow(parent.getColumn(),parent.getColumn());j++) {
+            for(int j=0;j<Math.pow(parent.getColumn(),parent.getLevel());j++) {
                 GridUI val = findDepthVal(parent,i,j);
 
                 if(val==null)continue;

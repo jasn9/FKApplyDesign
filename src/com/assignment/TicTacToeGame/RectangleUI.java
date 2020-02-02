@@ -178,25 +178,27 @@ public class RectangleUI implements GridUI {
             {
                 String z = Board[i][j].checkWinner();
                 Board[i][j].res = z;
+
             }
         }
 
-        String val = operations.checkRow(this,(int x)->(x+1));
+
+        String val = operations.checkGrid(this,(int x)->(x),(int x)->(x+1),this.getRowCriteria());
         if(!val.equals("-1")){
             return val;
         }
 
-        val = operations.checkColumn(this,(int x)->(x+1));
+        val = operations.checkGrid(this,(int x)->(x+1),(int x)->(x),this.getColumnCriteria());
         if(!val.equals("-1")) {
             return val;
         }
-        val = operations.checkRightDiagonal(this,(int x)->(x+1));
+        val = operations.checkGrid(this,(int x)->(x+1),(int x)->(x+1),this.getDiagonalCriteria());
 
         if(!val.equals("-1")){
             return val;
         }
 
-        val = operations.checkLeftDiagonal(this,(int x)->(x+1));
+        val = operations.checkGrid(this,(int x)->(x+1),(int x)->(x-1),this.getDiagonalCriteria());
         if(!val.equals("-1")){
             return val;
         }
