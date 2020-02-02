@@ -67,6 +67,8 @@ public class PlayGame {
             players[numberOfPlayer-1].setState("O");
         }
 
+
+
         for(int i=0;i<numberOfPlayer-compterIsPlaying;i++)
         {
             System.out.print("Enter The Name Of Player "+(i+1)+": ");
@@ -75,7 +77,6 @@ public class PlayGame {
             //System.out.println(name);
             players[i] = new Human();
             players[i].setName(name);
-
             System.out.println("Enter the state with which you want to play: ");
             String state = in.next();
 
@@ -184,22 +185,33 @@ public class PlayGame {
         do {
             System.out.print("Choice: ");
             choice = in.nextInt();
+
+            int side = 0;
+            if(choice>=1 && choice<=2) {
+                System.out.print("Enter The Length Of Side: ");
+                side = in.nextInt();
+            }
+
             if (choice == 1) {
+
                 game = new RectangleUI();
-                game.setRow(3);
-                game.setColumn(3);
-                game.setRowCriteria(3);
-                game.setColumnCriteria(3);
-                game.setDiagonalCriteria(3);
+                game.setRow(side);
+                game.setColumn(side);
+                game.setRowCriteria(side);
+                game.setColumnCriteria(side);
+                game.setDiagonalCriteria(side);
 
             } else {
                 if (choice == 2) {
+
                     game = new HexagonalUI();
-                    game.setRow(7);
-                    game.setColumn(13);
-                    game.setRowCriteria(4);
-                    game.setColumnCriteria(4);
-                    game.setDiagonalCriteria(4);
+                    int row = 2*side-1;
+                    game.setRow(row);
+                    int col = 2*row-1;
+                    game.setColumn(col);
+                    game.setRowCriteria(side);
+                    game.setColumnCriteria(side);
+                    game.setDiagonalCriteria(side);
 
                 }
                 else{
@@ -242,7 +254,9 @@ public class PlayGame {
         }
 
         game.createUI();
-        System.out.println("\nHere \'*\' Represents Cell Where You Can Make Move, Numbers Represent Co-ordinate Axis Represents With Which You Can Make Move");
+        System.out.println("\nInstructions - ");
+        System.out.println(" 1. Here \"*\" Represents Cell Where You Can Make Move.\n 2. Numbers Represent Co-ordinate Axis Represents With Which You Can Make Move.");
+        System.out.println(" 3. In this game \"State\" of a player is value which represent player in grid.\n 4. For instance \"X\" i.e cross is used in Tic-Tac-Toe Game To represent a player.");
         game.printGame();
         return true;
     }
