@@ -104,10 +104,11 @@ public class RectangleUI implements GridUI {
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < column; j++) {
                     Board[i][j] = new RectangleUI();
-                    Board[i][j].setRow(row);
-                    Board[i][j].setColumn(column);
-                    Board[i][j].setDiagonalCriteria(diagonalCriteria);
-                    Board[i][j].setRowCriteria(rowCriteria);
+                    Board[i][j].setRow(this.row);
+                    Board[i][j].setColumn(this.column);
+                    Board[i][j].setDiagonalCriteria(this.diagonalCriteria);
+                    Board[i][j].setRowCriteria(this.rowCriteria);
+                    Board[i][j].setColumnCriteria(this.columnCriteria);
                     Board[i][j].setLevel(level - 1);
                     Board[i][j].createUI();
 
@@ -154,11 +155,9 @@ public class RectangleUI implements GridUI {
                 else
                     System.out.print(" * ");
 
-                if((j+1)==Math.pow(column,level))
-                {
-                    System.out.println();
-                }
+
             }
+            System.out.println();
 
         }
 
@@ -196,16 +195,24 @@ public class RectangleUI implements GridUI {
             for(int j=0;j<column;j++)
             {
                 String val = Board[i][j].res;
-                if(val=="-1")continue;
+                if(val.equals("-1"))continue;
                 int count = 0;
-                for(int k=0;(k<rowCriteria)&&(k+j<column);k++)
+                int cur = 0;
+
+                while ((cur+j)<this.row)
                 {
-                    if(val.equals(Board[i][j+k].res))
+                    if(val.equals(this.Board[i][cur+j].res))
                     {
                         count++;
+                        if(count>=this.rowCriteria)
+                        {
+                            return val;
+                        }
                     }
                     else
                         break;
+
+                    cur++;
                 }
                 if(count==rowCriteria)
                 {
@@ -218,23 +225,32 @@ public class RectangleUI implements GridUI {
 
     public String checkColumn()
     {
-        for(int j=0;j<column;j++)
+        for(int i=0;i<this.row;i++)
         {
-            for(int i=0;i<row;i++)
+            for(int j=0;j<this.column;j++)
             {
-                String  val = Board[i][j].res;
-                if(val=="-1")continue;
+                String  val = this.Board[i][j].res;
+                if(val.equals("-1"))continue;
                 int count = 0;
-                for(int k=0;(k<columnCriteria)&&(k+i<row);k++)
+                int cur = 0;
+
+                while ((cur+i)<this.column)
                 {
-                    if(val.equals(Board[i+k][j].res))
+                    if(val.equals(this.Board[i+cur][j].res))
                     {
                         count++;
+                        if(count>=this.columnCriteria)
+                        {
+                            return val;
+                        }
                     }
                     else
                         break;
+
+                    cur++;
                 }
-                if(count==columnCriteria)
+
+                if(count==this.columnCriteria)
                 {
                     return val;
                 }
@@ -249,13 +265,13 @@ public class RectangleUI implements GridUI {
         {
             for(int j=0;j<column;j++) {
                 String  val = Board[i][j].res;
-                if(val=="-1")continue;
-                int curx = i;
-                int cury = j;
+                if(val.equals("-1"))continue;
+
+                int cur = 0;
                 int count = 0;
-                while(curx<row && cury<column)
+                while((cur+i)<row && (cur+j)<column)
                 {
-                    if(val.equals(Board[curx][cury].res))
+                    if(val.equals(Board[cur+i][cur+j].res))
                     {
                         count++;
                     }
@@ -263,8 +279,7 @@ public class RectangleUI implements GridUI {
                     {
                         break;
                     }
-                    curx++;
-                    cury++;
+                    cur++;
                 }
                 if(count==diagonalCriteria)return val;
             }
@@ -279,22 +294,21 @@ public class RectangleUI implements GridUI {
             for(int j=0;j<column;j++)
             {
                 String val = Board[i][j].res;
-                if(val=="-1")continue;
-                int curx = i;
-                int cury = j;
+                if(val.equals("-1"))continue;
+
+                int cur = 0;
                 int count = 0;
 
-                while(curx<row && cury>=0)
+                while((cur+i)<row && (j-cur)>=0)
                 {
-                    if(val.equals(Board[curx][cury].res))
+                    if(val.equals(Board[cur+i][j-cur].res))
                     {
                         count++;
                     }
                     else
                         break;
 
-                    curx++;
-                    cury--;
+                    cur++;
                 }
 
                 if(count==diagonalCriteria)return val;
@@ -316,24 +330,30 @@ public class RectangleUI implements GridUI {
         {
             for(int j=0;j<column;j++)
             {
-                //System.out.println(this.getLevel()+" "+i+" "+j);
                 String z = Board[i][j].checkWinner();
                 Board[i][j].res = z;
-                //System.out.println(this.getLevel()+" "+i+" "+j+"*"+z);
             }
         }
 
         String val = checkRow();
-        if(!val.equals("-1"))return val;
+        if(!val.equals("-1")){
+            return val;
+        }
 
         val = checkColumn();
-        if(!val.equals("-1"))return val;
-
+        if(!val.equals("-1")) {
+            return val;
+        }
         val = checkRightDiagonal();
-        if(!val.equals("-1"))return val;
+
+        if(!val.equals("-1")){
+            return val;
+        }
 
         val = checkLeftDiagonal();
-        if(!val.equals("-1"))return val;
+        if(!val.equals("-1")){
+            return val;
+        }
 
         return "-1";
 

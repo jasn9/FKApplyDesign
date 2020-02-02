@@ -224,7 +224,7 @@ public class HexagonalUI implements GridUI {
                 }
 
                 String val = Board[i][j].res;
-                if(val=="-1")continue;
+                if(val.equals("-1"))continue;
                 int count = 0;
                 int cur = 0;
 
@@ -259,22 +259,30 @@ public class HexagonalUI implements GridUI {
                     continue;
                 }
                 String val = Board[i][j].res;
-                if(val=="-1")continue;
+                if(val.equals("-1"))continue;
                 int count = 0;
                 int cur = 0;
-                //System.out.println(val);
-                while ((cur < diagonalCriteria) && (cur + j < column) && ((i + cur) < row)) {
-                    //System.out.println(cur+" "+i+" "+j+" "+Board[i+cur][j+cur].res);
+
+                while ((cur + j < column) && ((i + cur) < row)) {
+
                     if(Board[i+cur][j+cur]==null)break;
+
                     if ((Board[i + cur][j+cur].res).equals(val)) {
-                        //System.out.println("*");
+
                         count++;
+                        if(cur>=diagonalCriteria)
+                        {
+                            return val;
+                        }
+
                     } else {
+
                         break;
+
                     }
                     cur++;
                 }
-                System.out.println();
+
                 if (count == diagonalCriteria) {
                     return val;
                 }
@@ -295,20 +303,28 @@ public class HexagonalUI implements GridUI {
                     continue;
                 }
                 String val = Board[i][j].res;
-                if(val=="-1")continue;
+
+                if(val.equals("-1"))continue;
                 int count = 0;
                 int cur = 0;
-                while((cur<diagonalCriteria)&&(cur+j<column)&&((i-cur)>=0))
+
+                while((j-cur>=0)&&((i+cur)<row))
                 {
-                    if(Board[i-cur][j+cur]==null)break;
-                    if((Board[i-cur][cur+j].res).equals(val))
+                    if(Board[i+cur][j-cur]==null)break;
+
+                    if((Board[i+cur][j-cur].res).equals(val))
                     {
                         count++;
+                        if(count>=diagonalCriteria)
+                        {
+                            return val;
+                        }
                     }
                     else{
                         break;
                     }
                     cur++;
+
                 }
                 if(count==diagonalCriteria)
                 {

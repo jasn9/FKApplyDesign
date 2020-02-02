@@ -15,7 +15,7 @@ public class Leaderboard {
 
     public void addIn(String name, int level) {
         if (mp.containsKey(name)) {
-            if ((mp.get(name)).containsKey(level)) {
+            if (!(mp.get(name)).containsKey(level)) {
                 (mp.get(name)).put(level, 1);
             } else {
                 (mp.get(name)).put(level, mp.get(name).get(level) + 1);
