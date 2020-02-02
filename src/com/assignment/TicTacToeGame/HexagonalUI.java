@@ -12,7 +12,7 @@ public class HexagonalUI implements GridUI {
     private HexagonalUI[][] Board;
     private String res;
     private static int flg = 0;
-
+    private commonGrid operations;
 
     @Override
     public void setExists(boolean exists) {
@@ -94,10 +94,13 @@ public class HexagonalUI implements GridUI {
         return diagonalCriteria;
     }
 
+    public void setOperations(){ this.operations = new commonGrid(); }
+
     public void createUI()
     {
         Board = new HexagonalUI[row][column];
         this.res = "-1";
+        this.setOperations();
 
         if(level!=0)
         {
@@ -120,53 +123,24 @@ public class HexagonalUI implements GridUI {
 
     }
 
-    public HexagonalUI findDepthVal(HexagonalUI parent,int idx,int idy)
+    public String getRes(){ return this.res; }
+
+
+    public HexagonalUI findDepthVal(int x,int y)
     {
-        HexagonalUI cur = parent;
-        while(cur!=null && (cur.getLevel()!=0))
-        {
-            //System.out.println(cur.getLevel()+" "+idx+" "+idy);
-            int ix = idx/(int)Math.pow(row,cur.getLevel()-1);
-            int iy = idy/(int)Math.pow(column,cur.getLevel()-1);
-            idx = idx%((int)Math.pow(row,cur.getLevel()-1));
-            idy = idy%((int)Math.pow(column,cur.getLevel()-1));
-            cur = cur.Board[ix][iy];
-        }
-        return cur;
+        return (HexagonalUI) operations.findDepthVal(this,x,y);
     }
+
+
+    public HexagonalUI getBoard(int x,int y)
+    {
+        return this.Board[x][y];
+    }
+
 
     public void printGame()
     {
-        System.out.println();
-        System.out.print("   ");
-        for(int i=0;i<Math.pow(column,level);i++)
-        {
-            System.out.print((i+1)+"  ");
-        }
-
-        System.out.println();
-        for(int i=0;i<Math.pow(row,level);i++)
-        {
-            System.out.print((i+1)+" ");
-            for(int j=0;j<Math.pow(column,level);j++)
-            {
-                HexagonalUI val = findDepthVal(this,i,j);
-                if(val==null)
-                {
-                    System.out.print("   ");
-                }
-                else{
-                    if(val.res.equals("-1"))
-                    {
-                        System.out.print(" * ");
-                    }
-                    else{
-                        System.out.print(" "+val.res+" ");
-                    }
-                }
-            }
-            System.out.println();
-        }
+        operations.printGame(this);
     }
 
     public boolean changeState(int x,int y,String state,boolean back_move)
@@ -178,163 +152,18 @@ public class HexagonalUI implements GridUI {
         x--;
         y--;
 
-        HexagonalUI val = findDepthVal(this,x,y);
+        HexagonalUI val = findDepthVal(x,y);
 
         if((val == null) || ((!val.res.equals("-1")) && (back_move==false)))
         {
             return false;
         }
-        //System.out.println(val.res+state);
+
         val.res = state;
         return true;
 
     }
 
-    public boolean isFull()
-    {
-        for(int i=0;i<Math.pow(row,level);i++)
-        {
-            for(int j=0;j<Math.pow(column,level);j++)
-            {
-                HexagonalUI val = findDepthVal(this,i,j);
-                if(val==null)
-                {
-                    continue;
-                }
-                else{
-                    if(val.res.equals("-1"))
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    private String checkRow()
-    {
-        for(int i=0;i<row;i++)
-        {
-            for(int j=0;j<column;j++)
-            {
-                if(Board[i][j]==null)
-                {
-                    continue;
-                }
-
-                String val = Board[i][j].res;
-                if(val.equals("-1"))continue;
-                int count = 0;
-                int cur = 0;
-
-                while(((cur/2)<rowCriteria)&&(cur+j<column))
-                {
-                    if(Board[i][j+cur]==null)break;
-                    //System.out.println(Board[i][j+cur].res+" "+i+" "+j+" "+cur);
-                    if((Board[i][j+cur].res).equals(val))
-                    {
-                        count++;
-                    }
-                    else{
-                        break;
-                    }
-                    cur+=2;
-                }
-                if(count==rowCriteria)
-                {
-                    return val;
-                }
-
-            }
-        }
-        return "-1";
-    }
-
-    private String checkRightDiagonal()
-    {
-        for(int i=0;i<row;i++) {
-            for (int j = 0; j < column; j++) {
-                if (Board[i][j] == null) {
-                    continue;
-                }
-                String val = Board[i][j].res;
-                if(val.equals("-1"))continue;
-                int count = 0;
-                int cur = 0;
-
-                while ((cur + j < column) && ((i + cur) < row)) {
-
-                    if(Board[i+cur][j+cur]==null)break;
-
-                    if ((Board[i + cur][j+cur].res).equals(val)) {
-
-                        count++;
-                        if(cur>=diagonalCriteria)
-                        {
-                            return val;
-                        }
-
-                    } else {
-
-                        break;
-
-                    }
-                    cur++;
-                }
-
-                if (count == diagonalCriteria) {
-                    return val;
-                }
-
-            }
-        }
-        return "-1";
-    }
-
-    public String checkLeftDiagonal()
-    {
-        for(int i=0;i<row;i++)
-        {
-            for(int j=0;j<column;j++)
-            {
-                if(Board[i][j]==null)
-                {
-                    continue;
-                }
-                String val = Board[i][j].res;
-
-                if(val.equals("-1"))continue;
-                int count = 0;
-                int cur = 0;
-
-                while((j-cur>=0)&&((i+cur)<row))
-                {
-                    if(Board[i+cur][j-cur]==null)break;
-
-                    if((Board[i+cur][j-cur].res).equals(val))
-                    {
-                        count++;
-                        if(count>=diagonalCriteria)
-                        {
-                            return val;
-                        }
-                    }
-                    else{
-                        break;
-                    }
-                    cur++;
-
-                }
-                if(count==diagonalCriteria)
-                {
-                    return val;
-                }
-
-            }
-        }
-        return "-1";
-    }
 
     public String checkWinner()
     {
@@ -356,13 +185,13 @@ public class HexagonalUI implements GridUI {
             }
         }
 
-        String val = checkRow();
+        String val = operations.checkRow(this,(int x)->(x+2));
         if(!val.equals("-1"))return val;
 
-        val = checkRightDiagonal();
+        val = operations.checkRightDiagonal(this,(int x)->(x+1));
         if(!val.equals("-1"))return val;
 
-        val = checkLeftDiagonal();
+        val = operations.checkLeftDiagonal(this,(int x)->(x+1));
         if(!val.equals("-1"))return val;
 
 
@@ -370,6 +199,10 @@ public class HexagonalUI implements GridUI {
     }
 
 
+    public boolean isFull()
+    {
+        return operations.isFull(this);
+    }
 
 
 }

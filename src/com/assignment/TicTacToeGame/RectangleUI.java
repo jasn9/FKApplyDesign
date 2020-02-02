@@ -11,7 +11,7 @@ public class RectangleUI implements GridUI {
     private int level;
     private RectangleUI[][] Board;
     private String res;
-
+    private commonGrid operations;
 
     @Override
     public void setExists(boolean exists) {
@@ -93,10 +93,18 @@ public class RectangleUI implements GridUI {
         return diagonalCriteria;
     }
 
+
+    public void setOperations()
+    {
+        this.operations = new commonGrid();
+    }
+
     public void createUI() {
 
         Board = new RectangleUI[row][column];
         this.res = "-1";
+        this.setOperations();
+
         //Arrays.fill(Board,-1);
         //System.out.println(level);
         if (level>0) {
@@ -117,50 +125,21 @@ public class RectangleUI implements GridUI {
         }
     }
 
-    public RectangleUI findDepthVal(RectangleUI parent, int idx, int idy)
-    {
-        RectangleUI cur = parent;
-        while(cur.getLevel()!=0)
-        {
-            int ix = idx/(int)Math.pow(row,cur.getLevel()-1);
-            int iy = idy/(int)Math.pow(column,cur.getLevel()-1);
-            idx = idx%((int)Math.pow(row,cur.getLevel()-1));
-            idy = idy%((int)Math.pow(column,cur.getLevel()-1));
-            cur = cur.Board[ix][iy];
 
-        }
-        return cur;
+    public RectangleUI getBoard(int x,int y)
+    {
+        return this.Board[x][y];
     }
 
-    public void printGame() {
 
-        System.out.println();
-        System.out.print("   ");
-        for(int i=0;i<Math.pow(column,level);i++)
-        {
-            System.out.print((i+1)+"  ");
-        }
-        System.out.println();
-        for (int i = 0; i < Math.pow(row,level); i++) {
-            System.out.print((i+1)+" ");
-            for (int j = 0; j < Math.pow(column,level); j++) {
-                //GameUI cur = this;
-                int idx = i;
-                int idy = j;
+    public void printGame()
+    {
+        operations.printGame(this);
+    }
 
-                RectangleUI val = findDepthVal(this,idx,idy);
-
-                if (!val.res.equals("-1"))
-                    System.out.print(" " + val.res + " ");
-                else
-                    System.out.print(" * ");
-
-
-            }
-            System.out.println();
-
-        }
-
+    public RectangleUI findDepthVal(int x,int y)
+    {
+        return (RectangleUI) operations.findDepthVal(this,x,y);
     }
 
     public boolean changeState(int x,int y,String  state,boolean backMove)
@@ -172,150 +151,17 @@ public class RectangleUI implements GridUI {
         }
         x--;
         y--;
-        //System.out.println(this.getLevel()+" "+x+" "+y);
-        RectangleUI val = findDepthVal(this,x,y);
+
+        RectangleUI val = findDepthVal(x,y);
+
         if((!(val.res).equals("-1")) && (backMove==false))
         {
             return false;
         }
 
-        //System.out.println(state+" "+val.getLevel()+" "+val.res);
-        //printGame();
         val.res = state;
-        System.out.println();
-        //printGame();
         return true;
 
-    }
-
-    private String checkRow()
-    {
-        for(int i=0;i<row;i++)
-        {
-            for(int j=0;j<column;j++)
-            {
-                String val = Board[i][j].res;
-                if(val.equals("-1"))continue;
-                int count = 0;
-                int cur = 0;
-
-                while ((cur+j)<this.row)
-                {
-                    if(val.equals(this.Board[i][cur+j].res))
-                    {
-                        count++;
-                        if(count>=this.rowCriteria)
-                        {
-                            return val;
-                        }
-                    }
-                    else
-                        break;
-
-                    cur++;
-                }
-                if(count==rowCriteria)
-                {
-                    return val;
-                }
-            }
-        }
-        return "-1";
-    }
-
-    public String checkColumn()
-    {
-        for(int i=0;i<this.row;i++)
-        {
-            for(int j=0;j<this.column;j++)
-            {
-                String  val = this.Board[i][j].res;
-                if(val.equals("-1"))continue;
-                int count = 0;
-                int cur = 0;
-
-                while ((cur+i)<this.column)
-                {
-                    if(val.equals(this.Board[i+cur][j].res))
-                    {
-                        count++;
-                        if(count>=this.columnCriteria)
-                        {
-                            return val;
-                        }
-                    }
-                    else
-                        break;
-
-                    cur++;
-                }
-
-                if(count==this.columnCriteria)
-                {
-                    return val;
-                }
-            }
-        }
-        return "-1";
-    }
-
-    public String checkRightDiagonal()
-    {
-        for(int i=0;i<row;i++)
-        {
-            for(int j=0;j<column;j++) {
-                String  val = Board[i][j].res;
-                if(val.equals("-1"))continue;
-
-                int cur = 0;
-                int count = 0;
-                while((cur+i)<row && (cur+j)<column)
-                {
-                    if(val.equals(Board[cur+i][cur+j].res))
-                    {
-                        count++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                    cur++;
-                }
-                if(count==diagonalCriteria)return val;
-            }
-        }
-        return "-1";
-    }
-
-    public String checkLeftDiagonal()
-    {
-        for(int i=0;i<row;i++)
-        {
-            for(int j=0;j<column;j++)
-            {
-                String val = Board[i][j].res;
-                if(val.equals("-1"))continue;
-
-                int cur = 0;
-                int count = 0;
-
-                while((cur+i)<row && (j-cur)>=0)
-                {
-                    if(val.equals(Board[cur+i][j-cur].res))
-                    {
-                        count++;
-                    }
-                    else
-                        break;
-
-                    cur++;
-                }
-
-                if(count==diagonalCriteria)return val;
-
-            }
-        }
-        return "-1";
     }
 
     public String checkWinner()
@@ -335,22 +181,22 @@ public class RectangleUI implements GridUI {
             }
         }
 
-        String val = checkRow();
+        String val = operations.checkRow(this,(int x)->(x+1));
         if(!val.equals("-1")){
             return val;
         }
 
-        val = checkColumn();
+        val = operations.checkColumn(this,(int x)->(x+1));
         if(!val.equals("-1")) {
             return val;
         }
-        val = checkRightDiagonal();
+        val = operations.checkRightDiagonal(this,(int x)->(x+1));
 
         if(!val.equals("-1")){
             return val;
         }
 
-        val = checkLeftDiagonal();
+        val = operations.checkLeftDiagonal(this,(int x)->(x+1));
         if(!val.equals("-1")){
             return val;
         }
@@ -358,21 +204,11 @@ public class RectangleUI implements GridUI {
         return "-1";
 
     }
+
     public boolean isFull()
     {
-        for(int i=0;i<Math.pow(row,level);i++)
-        {
-            for(int j=0;j<Math.pow(column,level);j++) {
-                RectangleUI val = findDepthVal(this,i,j);
-                if ((val.res).equals("-1")) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return operations.isFull(this);
     }
-
-
 
 
 }

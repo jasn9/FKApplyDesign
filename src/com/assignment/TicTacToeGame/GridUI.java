@@ -20,6 +20,8 @@ public interface GridUI extends Grid {
     @Override
     int getRow();
 
+    String getRes();
+
     void setRowCriteria(int rowCriteria);
     void setColumnCriteria(int columnCriteria);
     void setDiagonalCriteria(int diagonalCriteria);
@@ -36,7 +38,7 @@ public interface GridUI extends Grid {
     void printGame();
     boolean isFull();
     boolean changeState(int x,int y,String state,boolean back_move);
-
+    GridUI getBoard(int x,int y);
     //int getLevel();
 
 }

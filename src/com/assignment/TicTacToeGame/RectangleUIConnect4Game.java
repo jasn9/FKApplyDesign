@@ -12,7 +12,7 @@ public class RectangleUIConnect4Game extends RectangleUI {
         }
         x--;
         y--;
-        RectangleUI val = findDepthVal(this,x,y);
+        RectangleUI val = findDepthVal(x,y);
         if((!(val.getRes()).equals("-1")) && (backMove==false))
         {
             return false;
@@ -22,7 +22,7 @@ public class RectangleUIConnect4Game extends RectangleUI {
         {
             return super.changeState(x+1,y+1,state,backMove);
         }
-        val = findDepthVal(this,x+1,y);
+        val = findDepthVal(x+1,y);
 
         if(val.getRes().equals("-1"))
         {

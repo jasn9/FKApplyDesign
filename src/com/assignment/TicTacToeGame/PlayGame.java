@@ -7,7 +7,7 @@ public class PlayGame {
 
     private Scanner in;
     private GridUI game;
-    private HashMap<String,Integer> mp;
+    private HashMap<String,Integer> nameHashMap;
     private Leaderboard leaderboard;
     private int level = 0;
 
@@ -45,7 +45,7 @@ public class PlayGame {
         while(!check);
     }
 
-    public void playerInit(boolean flg)
+    private void playerInit(boolean flg)
     {
         //System.out.print("Enter The Number of Player: ");
         //numberOfPlayer = in.nextInt();
@@ -56,14 +56,14 @@ public class PlayGame {
         players = new GamePlayer[numberOfPlayer];
         // flag
         int compterIsPlaying = 0;
-        mp= new HashMap<>();
+        nameHashMap = new HashMap<>();
 
         // for only computer play
         if(flg) {
             compterIsPlaying = 1;
             players[numberOfPlayer-1] = new Computer();
             players[numberOfPlayer-1].setName("Bot");
-            mp.put("O",numberOfPlayer-compterIsPlaying);
+            nameHashMap.put("O",numberOfPlayer-compterIsPlaying);
             players[numberOfPlayer-1].setState("O");
         }
 
@@ -80,12 +80,12 @@ public class PlayGame {
             System.out.println("Enter the state with which you want to play: ");
             String state = in.next();
 
-            while (mp.containsKey(state)){
+            while (nameHashMap.containsKey(state)){
                 System.out.println("State Already Taken: ");
                 state = in.next();
             }
 
-            mp.put(state,i);
+            nameHashMap.put(state,i);
             (players[i]).setState(state);
         }
 
@@ -98,7 +98,7 @@ public class PlayGame {
 
         for(GamePlayer obj: players)
         {
-            System.out.println("NAME: "+obj.getName()+" STATE: "+ obj.getState()+" SERIAL NO: "+mp.get(obj.getState()));
+            System.out.println("NAME: "+obj.getName()+" STATE: "+ obj.getState()+" SERIAL NO: "+ nameHashMap.get(obj.getState()));
         }
 
 
@@ -137,7 +137,7 @@ public class PlayGame {
 
                     if((check==true) && (player instanceof Human)) {
 
-                        System.out.println("Press 1:Want To Make Back Move !\nPress 4:To Continue!");
+                        System.out.println("\nPress 1:Want To Make Back Move !\nPress 4:To Continue!");
                         back_move = in.nextInt();
 
                         if (back_move == 1) {
@@ -160,9 +160,9 @@ public class PlayGame {
                 String val = game.checkWinner();
                 if (!val.equals("-1")) {
                     game.printGame();
-                    System.out.println("\nWinner is: " + players[mp.get(val)].getName()+"\n");
-                    leaderboard.addIn(players[mp.get(val)].getName(),level);
-                    System.out.print("Leader Board\n");
+                    System.out.println("\nWinner is: " + players[nameHashMap.get(val)].getName()+"!!\n");
+                    leaderboard.addIn(players[nameHashMap.get(val)].getName(),level);
+                    System.out.print("Leader Board!!\n");
                     leaderboard.display();
                     return;
                 }
