@@ -11,6 +11,11 @@ public class Leaderboard {
         leaderboard = new HashMap<>();
     }
 
+    public Map<String, Map<Integer, Integer>> getLeaderborad()
+    {
+        return leaderboard;
+    }
+
     public void addIn(String name, int level) {
         if (leaderboard.containsKey(name)) {
             if (!(leaderboard.get(name)).containsKey(level)) {
