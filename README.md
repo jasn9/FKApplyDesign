@@ -1,11 +1,7 @@
 # FKApplyDesign
 
-<<<<<<< HEAD
 Design and Implemented Tic-Tac-Toe Game API
 
-
-Code On Branch Dev
-=======
 <B>Design and Implement Tic-Tac-Toe Game API</B>
 
 <B>Run</B> this product by compiling and executing <I> main.java </I>.
@@ -59,6 +55,3 @@ PlayWithComputer with common behaviour play where user play game.
 
 5> Make move function in Human and computer is purely dynammic and can be designed in any way
 independently.
-
-
->>>>>>> dev
