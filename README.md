@@ -2,7 +2,7 @@
 
 <B>Design and Implement Tic-Tac-Toe Game API</B>
 
-<B>Run</B> this product by compiling and executing <I> main.java </I>.
+<B>Run</B> this application by compiling and executing <I> main.java </I>.
 
 <B>Interfaces:-</B>
 
